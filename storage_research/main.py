@@ -4,7 +4,7 @@ from storage_research.service.generator import Generator
 from storage_research.service.handler import handler_result
 from storage_research.service.loader_mango import LoaderMongo
 from storage_research.service.loader_pg import LoaderPostgres
-from storage_research.settings.config import pg_config, mongo_config, LOGGING
+from storage_research.settings.config import LOGGING, mongo_config, pg_config
 
 
 def main():

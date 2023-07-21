@@ -5,12 +5,12 @@ import threading
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Any
+
 import psycopg2
 from psycopg2.extensions import connection as _connection
 from psycopg2.extras import execute_values
 
 from storage_research.service.generator import Generator
-
 from storage_research.settings.config import PostgresConfig, pg_config
 from storage_research.tools.time_decor import timing_decorator
 
@@ -21,7 +21,7 @@ class LoaderPostgres:
     wright_dot_r = 0
     wright_dot_w = 0
     count_docs = 0
-    tables = ['likes', 'reviews', 'bookmarks']
+    tables = ["likes", "reviews", "bookmarks"]
 
     def __init__(self, generator: Generator, config: PostgresConfig):
         self.config = config
@@ -30,12 +30,13 @@ class LoaderPostgres:
         self.db: _connection | None = None
 
     def _connect(self):
-        return psycopg2.connect(dbname=self.config.pg_dbname,
-                                user=self.config.pg_user,
-                                password=self.config.pg_password,
-                                host=self.config.pg_host,
-                                port=self.config.pg_port
-                                )
+        return psycopg2.connect(
+            dbname=self.config.pg_dbname,
+            user=self.config.pg_user,
+            password=self.config.pg_password,
+            host=self.config.pg_host,
+            port=self.config.pg_port,
+        )
 
     @contextmanager
     def conn_context_pg(self):
@@ -71,15 +72,15 @@ class LoaderPostgres:
                     pass
 
     def infinity_read(self):
-        with psycopg2.connect(dbname=self.config.pg_dbname,
-                              user=self.config.pg_user,
-                              password=self.config.pg_password,
-                              host=self.config.pg_host,
-                              port=self.config.pg_port
-                              ) as db:
+        with psycopg2.connect(
+            dbname=self.config.pg_dbname,
+            user=self.config.pg_user,
+            password=self.config.pg_password,
+            host=self.config.pg_host,
+            port=self.config.pg_port,
+        ) as db:
             psycopg2.extras.register_uuid()
             while True:
-
                 self._read_pg(db)
                 try:
                     if self.generator.counter > self.config.pg_max_docs:
@@ -87,15 +88,14 @@ class LoaderPostgres:
                 except TypeError:
                     pass
 
-    @timing_decorator('Запись PG', pg_config.pg_result_w)
+    @timing_decorator("Запись PG", pg_config.pg_result_w)
     def _load_to_pg(self, docs: list[Any], db):
         with db.cursor() as cursor:
-            columns = docs[0].model_dump(by_alias=True,
-                                         exclude={'collection'}).keys()
-            values = [list(
-                doc.model_dump(by_alias=True, exclude={'collection'}).values())
-                for
-                doc in docs]
+            columns = docs[0].model_dump(by_alias=True, exclude={"collection"}).keys()
+            values = [
+                list(doc.model_dump(by_alias=True, exclude={"collection"}).values())
+                for doc in docs
+            ]
             query = f"INSERT INTO test.{docs[0].collection} ({', '.join(columns)}) VALUES %s"
             execute_values(cursor, query, values)
             db.commit()
@@ -106,7 +106,7 @@ class LoaderPostgres:
             else:
                 return None
 
-    @timing_decorator('Чтение PG', pg_config.pg_result_r)
+    @timing_decorator("Чтение PG", pg_config.pg_result_r)
     def _read_pg(self, db):
         with db.cursor() as cursor:
             query = f"SELECT * FROM test.{self.tables[random.randint(0, 2)]} ORDER BY RANDOM() LIMIT 10"

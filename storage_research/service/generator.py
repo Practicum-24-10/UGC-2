@@ -1,9 +1,9 @@
 import logging
 import random
-import uuid
 import string
+import uuid
 
-from storage_research.models.models import Like, Reviews, Bookmarks
+from storage_research.models.models import Bookmarks, Like, Reviews
 
 log = logging.getLogger(__name__)
 
@@ -27,7 +27,7 @@ class Generator:
     def _gen_text():
         length = random.randint(50, 100)
         characters = string.ascii_letters + string.digits + string.punctuation
-        return ''.join(random.choice(characters) for _ in range(length))
+        return "".join(random.choice(characters) for _ in range(length))
 
     @staticmethod
     def _gen_rating():
@@ -50,28 +50,27 @@ class Generator:
             yield self._gen_bookmarks()
 
     def _gen_like(self):
-        return [Like(
-            user_id=self._gen_user(),
-            film_id=self._gen_film(),
-            value=self._gen_rating()
-        ) for _ in range(self.random_butch())
+        return [
+            Like(
+                user_id=self._gen_user(),
+                film_id=self._gen_film(),
+                value=self._gen_rating(),
+            )
+            for _ in range(self.random_butch())
         ]
 
     def _gen_review(self):
-        return [Reviews(
-            user_id=self._gen_user(),
-            film_id=self._gen_film(),
-            review=self._gen_text()
-        ) for _ in range(self.random_butch())]
-
-    def _gen_bookmarks(self):
-        return [Bookmarks(
-            user_id=self._gen_user(),
-            film_id=self._gen_film()
-        ) for _ in range(self.random_butch())
+        return [
+            Reviews(
+                user_id=self._gen_user(),
+                film_id=self._gen_film(),
+                review=self._gen_text(),
+            )
+            for _ in range(self.random_butch())
         ]
 
-# t = Generator()
-# for i in t.harvest():
-#     print(i)
-#     sleep(2)
+    def _gen_bookmarks(self):
+        return [
+            Bookmarks(user_id=self._gen_user(), film_id=self._gen_film())
+            for _ in range(self.random_butch())
+        ]

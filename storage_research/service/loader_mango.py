@@ -1,14 +1,13 @@
 import logging
 import os
 import random
+import threading
 from pathlib import Path
 from typing import Any
-import threading
 
 from pymongo import MongoClient
 
 from storage_research.service.generator import Generator
-
 from storage_research.settings.config import MongoConfig, mongo_config
 from storage_research.tools.time_decor import timing_decorator
 
@@ -21,7 +20,7 @@ class LoaderMongo:
     wright_dot_r = 0
     wright_dot_w = 0
     count_docs = 0
-    collections = ['likes', 'reviews', 'bookmarks']
+    collections = ["likes", "reviews", "bookmarks"]
 
     def __init__(self, generator: Generator, config: MongoConfig):
         self.config = config
@@ -33,8 +32,8 @@ class LoaderMongo:
         self.db = MongoClient(
             host=self.config.mongo_host,
             port=self.config.mongo_port,
-            uuidRepresentation='standard'
-        )['movies']
+            uuidRepresentation="standard",
+        )["movies"]
 
     def _clear_base(self):
         for collection in self.collections:
@@ -65,15 +64,16 @@ class LoaderMongo:
             except TypeError:
                 pass
 
-    @timing_decorator('Запись Mongo', mongo_config.mongo_result_w)
+    @timing_decorator("Запись Mongo", mongo_config.mongo_result_w)
     def _load_to_mongo(self, docs: list[Any]):
         if len(docs) == 1:
             self.db[docs[0].collection].insert_one(
-                docs[0].model_dump(by_alias=True, exclude={'collection'}))
+                docs[0].model_dump(by_alias=True, exclude={"collection"})
+            )
         else:
             self.db[docs[0].collection].insert_many(
-                [doc.model_dump(by_alias=True, exclude={'collection'}) for
-                 doc in docs])
+                [doc.model_dump(by_alias=True, exclude={"collection"}) for doc in docs]
+            )
         self.wright_dot_w += 1
         if self.wright_dot_w == self.wright_interval:
             self.wright_dot_w = 0
@@ -81,9 +81,9 @@ class LoaderMongo:
         else:
             return None
 
-    @timing_decorator('Чтение Mongo', mongo_config.mongo_result_r)
+    @timing_decorator("Чтение Mongo", mongo_config.mongo_result_r)
     def _read_mongo(self):
-        pipeline = [{'$sample': {'size': self.config.mongo_sample_size}}]
+        pipeline = [{"$sample": {"size": self.config.mongo_sample_size}}]
 
         self.db[self.collections[random.randint(0, 2)]].aggregate(pipeline)
         return self.generator.counter
