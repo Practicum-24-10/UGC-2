@@ -22,10 +22,10 @@ jobs:
 
     - name: Install dependencies
       run: |
-        ls
-        python -m pip install --upgrade pip
-        # pip install -r ugc_service/tests/functional/requirements.txt
-        pip install -r requirements.txt
+        pip install flake8==6.0.0
+        pip install Flake8-pyproject==1.2.3
+        pip install pytest==7.4.0
+        pip install pyright==1.1.318
 
     - name: Lint with flake8
       run: |
