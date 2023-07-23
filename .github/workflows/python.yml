@@ -42,3 +42,13 @@ jobs:
     - name: Test with pytest
       run: |
         pytest ugc_service/tests/
+
+    - name: Send Telegram notification on success
+      if: ${{ success() }}
+      env:
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      run: |
+        curl -X POST https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage \
+          -d "chat_id=$TELEGRAM_CHAT_ID" \
+          -d "text=CI успешно прошёл! 🎉"
