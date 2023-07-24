@@ -1,5 +1,5 @@
 [tool.flake8]
-exclude = ['.git', '__pycache__', 'venv']
+exclude = ['.git', '__pycache__', 'venv', 'storage_research']
 max-complexity = 10
 max-line-length = 88
 
@@ -13,7 +13,7 @@ exclude = [
     "**/__pycache__"
 ]
 include = [
-  "ugc_service",
+  "backend",
 ]
 pythonPlatform = "All"
 pythonVersion = "3.10"
