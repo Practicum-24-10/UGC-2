@@ -21,3 +21,6 @@ typeCheckingMode = "basic"
 useLibraryCodeForTypes = true
 venv = "venv"
 venvPath = '.'
+
+[tool.pytest.ini_options]
+pythonpath = "."
