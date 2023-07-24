@@ -13,7 +13,7 @@ dotenv.load_dotenv()
 class AppSettings(BaseSettings):
     project_name: str = "Some project name"
     mongo_host: str = "localhost"
-    mongo_port: int = 6379
+    mongo_port: int = 27017
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
