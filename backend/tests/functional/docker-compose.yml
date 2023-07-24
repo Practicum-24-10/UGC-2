@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+    mongo:
+
+    backend:
+      build: ../../.
+      image: backend-image
+      env_file:
+        - ../../.env
+      healthcheck:
+        test: ["CMD", "curl", "--fail", "http://localhost:8000/api/openapi"]
+        interval: 15s
+        timeout: 5s
+        retries: 5
+      depends_on:
+        mongo:
+          condition: service_healthy
+        broker:
+          condition: service_healthy
+      expose:
+        - 8000
+    tests:
+      image: backend-image
+      working_dir: /app/backend/tests/functional
+      env_file:
+        - .env
+      entrypoint: >
+        sh -c "pip install -r requirements.txt
+        && pytest src_tests"
+      depends_on:
+        - backend
+
+volumes:
+    backend_mongo_volume:
+      name: backend_test_mongo_volume
