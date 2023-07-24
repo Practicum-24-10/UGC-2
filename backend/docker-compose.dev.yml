@@ -2,6 +2,17 @@ version: '3.9'
 
 services:
     mongo:
+      image: mongo
+      restart: always
+      ports:
+        - "27017:27017"
+      volumes:
+        - ./entrypoint/mongo/init_db.js:/docker-entrypoint-initdb.d/init_db.js
+      healthcheck:
+        test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+        interval: 10s
+        timeout: 5s
+        retries: 5
 
 #    backend:
 #      build: .
@@ -16,8 +27,6 @@ services:
 #      depends_on:
 #        mongo:
 #          condition: service_healthy
-#        broker:
-#          condition: service_healthy
 #      expose:
 #        - 8000
 #
@@ -28,7 +37,3 @@ services:
         - ./configs:/etc/nginx/conf.d:ro
       ports:
         - "80:80"
-
-volumes:
-    backend_mongo_volume:
-      name: backend_mongo_volume
