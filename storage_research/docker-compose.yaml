@@ -9,7 +9,7 @@ services:
     volumes:
       - ./entrypoint/mongo/init_db.js:/docker-entrypoint-initdb.d/init_db.js
     healthcheck:
-      test: [ "CMD-SHELL", 'mongo --quiet --eval "db.stats()"' ]
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
       interval: 10s
       timeout: 5s
       retries: 5
