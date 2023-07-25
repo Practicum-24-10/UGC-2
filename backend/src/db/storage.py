@@ -32,7 +32,10 @@ class AbstractStorage(ABC):
 
 class MongoStorage(AbstractStorage):
     def __init__(self, host: str, port: int):
-        self._connect = motor.motor_asyncio.AsyncIOMotorClient(f'mongodb://{host}:{port}',uuidRepresentation="standard")['movies']
+        self._connect = \
+        motor.motor_asyncio.AsyncIOMotorClient(f'mongodb://{host}:{port}',
+                                               uuidRepresentation="standard")[
+            'movies']
 
     async def get_all(self, collection: str, data: dict):
         return await self._connect[collection].find(data)
@@ -46,8 +49,11 @@ class MongoStorage(AbstractStorage):
     async def delete_many(self, collection: str, data: dict):
         return await self._connect[collection].delete_many(data)
 
-    async def set(self, collection: str, model: Any):
-        return await self._connect[collection].insert_one(model)
+    async def set(self, collection: str, data: dict):
+        new_like = await self._connect[collection].update_one(data, {
+            "$setOnInsert": data
+        }, upsert=True)
+        return new_like.upserted_id
 
     async def close(self):
         pass

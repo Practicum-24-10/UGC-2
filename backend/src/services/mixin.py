@@ -13,11 +13,18 @@ class MixinModel(AbstractMixin):
         self.storage = storage
 
     async def _get_from_storage(self, collection: str,
-                                data: dict) -> bytes | None:
-        data = await self.storage.get_one(collection, data)
-        if not data:
+                                data: dict):
+        response = await self.storage.get_one(collection, data)
+        if not response:
             return None
-        return data
+        return response
 
-    async def _put_to_storage(self, collection: str, data: Any):
-        await self.storage.set(collection, data)
+    async def _put_to_storage(self, collection: str, user_id: str, data: Any):
+        data["user_id"] = user_id
+        return await self.storage.set(collection, data)
+
+    async def _del_to_storage(self, collection: str, like_id: str):
+        data = {
+            "_id": like_id
+        }
+        return await self.storage.delete_one(collection,data)

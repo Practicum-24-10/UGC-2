@@ -9,6 +9,5 @@ def orjson_dumps(v, *, default):
 
 
 class Like(BaseModel):
-    user_id: UUID
     film_id: UUID
     value: int
