@@ -1,3 +1,5 @@
+from uuid import UUID
+
 import orjson
 from pydantic import BaseModel
 
@@ -7,4 +9,5 @@ def orjson_dumps(v, *, default):
 
 
 class Like(BaseModel):
-    pass
+    film_id: UUID
+    value: int
