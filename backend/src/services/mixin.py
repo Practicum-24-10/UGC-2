@@ -27,4 +27,4 @@ class MixinModel(AbstractMixin):
         data = {
             "_id": like_id
         }
-        return await self.storage.delete_one(collection,data)
+        return await self.storage.delete_one(collection, data)
