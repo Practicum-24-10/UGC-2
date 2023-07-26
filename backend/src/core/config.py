@@ -23,3 +23,5 @@ PUBLIC_KEY_DIR = os.path.dirname(
     )  # type: ignore
 
 PUBLIC_KEY = os.path.join(PUBLIC_KEY_DIR, os.environ.get("PUBLIC_KEY"))  # type: ignore
+
+DSN = os.environ.get('SENTRY_DSN')
