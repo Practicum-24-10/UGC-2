@@ -55,14 +55,14 @@ async def dell_add_like(
         new_like_id = await like_service.add_like(str(user_id), like_js)
         if new_like_id is None:
             raise HTTPException(
-                status_code=HTTPStatus.CONFLICT, detail=errors.NOT_FOUND
+                status_code=HTTPStatus.CONFLICT, detail=errors.CONFLICT
             )
         return LikeResponse(like_id=str(new_like_id), status=True)
     del_result = await like_service.dell_like(like_id['_id'])
     if del_result:
         return LikeResponse(like_id=None, status=True)
     raise HTTPException(status_code=HTTPStatus.CONFLICT,
-                        detail=errors.NOT_FOUND)
+                        detail=errors.CONFLICT)
 
 
 @router.get(

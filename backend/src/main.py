@@ -6,7 +6,7 @@ from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 from sentry_sdk.integrations.fastapi import FastApiIntegration
 
-from backend.src.api.v1 import api_likes
+from backend.src.api.v1 import api_likes,api_reviews
 from backend.src.auth import rsa_key
 from backend.src.auth.abc_key import RsaKey
 from backend.src.core.config import PUBLIC_KEY, AppSettings, DSN
@@ -44,7 +44,8 @@ async def shutdown():
 
 app.include_router(
     api_likes.router, prefix="/api/v1/likes", tags=["likes"])
-
+app.include_router(
+    api_reviews.router, prefix="/api/v1/reviews", tags=["reviews"])
 if __name__ == "__main__":
     logging.basicConfig(**LOGGING)
     log = logging.getLogger(__name__)
