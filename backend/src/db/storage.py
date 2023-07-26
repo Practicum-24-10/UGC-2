@@ -11,8 +11,9 @@ class AbstractStorage(ABC):
         pass
 
     @abstractmethod
-    async def find_by_pagination(self, collection: str,
-                                 data: dict, skip: int, limit: int):
+    async def find_by_pagination(
+        self, collection: str, data: dict, skip: int, limit: int
+    ):
         pass
 
     @abstractmethod
@@ -51,20 +52,27 @@ class MongoStorage(AbstractStorage):
         )["movies"]
 
     async def get_all(self, collection: str, data: dict):
-        return await self._connect[collection].find(data)
+        return await self._connect[collection].find(data).to_list(None)
 
     async def get_one(self, collection: str, data: dict):
         return await self._connect[collection].find_one(data)
 
     async def update_one(self, collection: str, data: dict, doc_id: ObjectId):
-        result = await self._connect[collection].update_one({"_id": doc_id},
-                                                            {"$set": data},
-                                                            upsert=False)
+        result = await self._connect[collection].update_one(
+            {"_id": doc_id}, {"$set": data}, upsert=False
+        )
         return result
 
-    async def find_by_pagination(self, collection: str,
-                                 data: dict, skip: int, limit: int):
-        result = await self._connect[collection].find(data).skip(skip).limit(limit).to_list(None)
+    async def find_by_pagination(
+        self, collection: str, data: dict, skip: int, limit: int
+    ):
+        result = (
+            await self._connect[collection]
+            .find(data)
+            .skip(skip)
+            .limit(limit)
+            .to_list(None)
+        )
         return result
 
     async def delete_one(self, collection: str, data: dict):
