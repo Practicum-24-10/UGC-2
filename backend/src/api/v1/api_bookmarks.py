@@ -35,10 +35,10 @@ class BookmarksAll(BaseModel):
 
 
 @router.post(
-    "/add",
+    "/",
     response_description="Add new bookmarks",
     response_model=BookmarksResponse,
-    summary="Добавление закладки",
+    summary="Добавить закладку",
 )
 async def add_bookmarks(
     bookmarks: BookmarksPost = Body(...),
@@ -57,10 +57,10 @@ async def add_bookmarks(
 
 
 @router.get(
-    "/all",
+    "/",
     response_description="All bookmarks",
     response_model=BookmarksAll,
-    summary="Получение всех рецензий фильма",
+    summary="Получить все закладки",
 )
 async def get_all_bookmarks(
     jwt: None | JWTPayload = Depends(get_token_payload),
@@ -84,7 +84,7 @@ async def get_all_bookmarks(
     "/",
     response_description="Delete bookmarks",
     response_model=BookmarksResponse,
-    summary="Удаление закладки",
+    summary="Удалить закладку",
 )
 async def delete_bookmarks(
     bookmarks: BookmarksPost = Body(...),
