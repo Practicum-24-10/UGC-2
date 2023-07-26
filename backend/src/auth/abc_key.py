@@ -2,11 +2,11 @@ from abc import ABC, abstractmethod
 
 
 class AbstractKey(ABC):
-    key: str
-    algorithms: list[str]
-    pl_is_superuser: str
-    pl_permissions: str
-    pl_sub: str
+    key: str | None
+    algorithms: list[str] | None
+    pl_is_superuser: str | None
+    pl_permissions: str | None
+    pl_sub: str | None
 
     @abstractmethod
     async def _load(self, path: str):
@@ -14,11 +14,11 @@ class AbstractKey(ABC):
 
 
 class RsaKey(AbstractKey):
-    key: str
-    algorithms: list[str]
-    pl_is_superuser: str
-    pl_permissions: str
-    pl_sub: str
+    key: str | None
+    algorithms: list[str] | None
+    pl_is_superuser: str | None
+    pl_permissions: str | None
+    pl_sub: str | None
 
     def __init__(self, path: str, algorithms: list[str]):
         self._load(path)

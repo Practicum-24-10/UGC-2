@@ -20,8 +20,8 @@ class LikeResponse(BaseModel):
 
 
 class LikesCountResponse(BaseModel):
-    likes: int = Field(title="Количество лайков", example=12345)
-    dislikes: int = Field(title="Количество дизлайков", example=123)
+    likes: int | None = Field(title="Количество лайков", example=12345)
+    dislikes: int | None = Field(title="Количество дизлайков", example=123)
 
     user_like: int | None = Field(title="Лайк", ge=0, le=1, example=1)
 
