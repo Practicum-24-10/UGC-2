@@ -19,7 +19,8 @@ class LikeService(MixinModel):
 
     async def dell_like(self, like_id: str):
         del_result = await self._del_to_storage('likes', like_id)
-        return del_result.acknowledged
+        if del_result:
+            return del_result.acknowledged
 
     async def get_like(self, user_id: UUID, film_id: UUID):
         data = {
