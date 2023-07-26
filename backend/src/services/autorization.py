@@ -12,7 +12,7 @@ security = HTTPBearer(auto_error=False)
 
 async def get_token_payload(
         authorization: HTTPAuthorizationCredentials | None = Depends(security),
-        pk: AbstractKey | None = Depends(get_pk)
+        pk: AbstractKey = Depends(get_pk)
 ) -> None | JWTPayload:
     if authorization is not None:
         token = authorization.credentials

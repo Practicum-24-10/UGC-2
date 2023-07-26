@@ -23,7 +23,10 @@ class MixinModel(AbstractMixin):
         return await self.storage.set(collection, data)
 
     async def _count_to_storage(self, collection: str, data: dict):
-        return await self.storage.count(collection,data)
+        response = await self.storage.count(collection, data)
+        if not response:
+            return 0
+        return response
 
     async def _del_to_storage(self, collection: str, data: dict):
         return await self.storage.delete_one(collection, data)
