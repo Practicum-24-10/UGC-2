@@ -22,6 +22,10 @@ class AbstractStorage(ABC):
         pass
 
     @abstractmethod
+    async def count(self, collection: str, data: dict):
+        pass
+
+    @abstractmethod
     async def set(self, collection: str, model: Any):
         pass
 
@@ -47,6 +51,10 @@ class MongoStorage(AbstractStorage):
 
     async def delete_many(self, collection: str, data: dict):
         return await self._connect[collection].delete_many(data)
+
+    async def count(self, collection: str, data: dict):
+        count_result = await self._connect[collection].count_documents(data)
+        return count_result
 
     async def set(self, collection: str, data: dict):
         new_like = await self._connect[collection].update_one(
