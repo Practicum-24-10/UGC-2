@@ -7,11 +7,11 @@ from backend.src.auth.rsa_key import get_pk
 from backend.src.local.services import autorization as errors
 from backend.src.models.jwt import JWTPayload
 
-security = HTTPBearer()
+security = HTTPBearer(auto_error=False)
 
 
 async def get_token_payload(
-        authorization: HTTPAuthorizationCredentials = Depends(security),
+        authorization: HTTPAuthorizationCredentials | None = Depends(security),
         pk: AbstractKey = Depends(get_pk)
 ) -> None | JWTPayload:
     if authorization is not None:

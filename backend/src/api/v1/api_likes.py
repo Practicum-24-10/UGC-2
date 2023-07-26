@@ -1,6 +1,7 @@
+from typing import Annotated
 from uuid import UUID
 
-from fastapi import APIRouter, Body, Depends, HTTPException
+from fastapi import APIRouter, Body, Depends, HTTPException, Path
 from fastapi.encoders import jsonable_encoder
 from http import HTTPStatus
 from backend.src.models.jwt import JWTPayload
@@ -13,8 +14,16 @@ router = APIRouter()
 
 
 class LikeResponse(BaseModel):
-    like_id: str | None = Field(title="ID Лайка", example="64c046134ba01daa94d5e59c")
+    like_id: str | None = Field(title="ID Лайка",
+                                example="64c046134ba01daa94d5e59c")
     status: bool = Field(title="Успех", example=True)
+
+
+class LikesCountResponse(BaseModel):
+    likes: int = Field(title="Количество лайков", example=12345)
+    dislikes: int = Field(title="Количество дизлайков", example=123)
+
+    user_like: int | None = Field(title="Лайк", ge=0, le=1, example=1)
 
 
 class LikePost(BaseModel):
@@ -31,9 +40,9 @@ class LikePost(BaseModel):
     summary="Добавление/Удаление лайка",
 )
 async def dell_add_like(
-    like: LikePost = Body(...),
-    jwt: None | JWTPayload = Depends(get_token_payload),
-    like_service: LikeService = Depends(get_like_service),
+        like: LikePost = Body(...),
+        jwt: None | JWTPayload = Depends(get_token_payload),
+        like_service: LikeService = Depends(get_like_service),
 ):
     if jwt is None:
         raise HTTPException(
@@ -49,7 +58,34 @@ async def dell_add_like(
                 status_code=HTTPStatus.CONFLICT, detail=errors.NOT_FOUND
             )
         return LikeResponse(like_id=str(new_like_id), status=True)
-    del_result = await like_service.dell_like(like_id)
+    del_result = await like_service.dell_like(like_id['_id'])
     if del_result:
         return LikeResponse(like_id=None, status=True)
-    raise HTTPException(status_code=HTTPStatus.CONFLICT, detail=errors.NOT_FOUND)
+    raise HTTPException(status_code=HTTPStatus.CONFLICT,
+                        detail=errors.NOT_FOUND)
+
+
+@router.get(
+    "/{film_id}",
+    response_description="Add new like",
+    response_model=LikesCountResponse,
+    summary="Добавление/Удаление лайка",
+)
+async def search_like(
+        film_id: Annotated[UUID, Path(
+            description="UUID фильма",
+            example="9b3c278c-665f-4055-a824-891f19cb4993"
+        )],
+        jwt: None | JWTPayload = Depends(get_token_payload),
+        like_service: LikeService = Depends(get_like_service),
+):
+    if jwt is not None:
+        user_id = jwt.user_id
+        like_id = await like_service.get_like(user_id, film_id)
+    else:
+        like_id = None
+    likes, dislikes = await like_service.get_count(film_id)
+    user_like = None if like_id is None else like_id['value']
+
+    return LikesCountResponse(likes=likes, dislikes=dislikes,
+                              user_like=user_like)
