@@ -3,11 +3,10 @@ from functools import lru_cache
 from uuid import UUID
 
 from bson import ObjectId
-
-from backend.src.db.storage import AbstractStorage
-from backend.src.db.mongo_db import get_mongo
 from fastapi import Depends
 
+from backend.src.db.mongo_db import get_mongo
+from backend.src.db.storage import AbstractStorage
 from backend.src.services.mixin import MixinModel
 
 log = logging.getLogger(__name__)
@@ -31,7 +30,7 @@ class ReviewsService(MixinModel):
         data = {
             "film_id": film_id
         }
-        _to = size * page
+        _to = size
         _from = size * (page - 1)
         result = await self._get_from_pagination('reviews', data, _from, _to)
         if result:

@@ -23,7 +23,8 @@ LOGGING = {
     "formatters": {
         "access": {
             "()": "uvicorn.logging.AccessFormatter",
-            "fmt": '%(levelprefix)s %(asctime)s :: %(client_addr)s - "%(request_line)s" %(status_code)s',
+            "fmt": '%(levelprefix)s %(asctime)s :: '
+                   '%(client_addr)s - "%(request_line)s" %(status_code)s',
         },
     },
     "handlers": {

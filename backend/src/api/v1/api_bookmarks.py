@@ -5,10 +5,9 @@ from fastapi import APIRouter, Body, Depends, HTTPException
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel, Field
 
+from backend.src.local.api.v1 import local_bookmarks as errors
 from backend.src.models.jwt import JWTPayload
 from backend.src.services.autorization import get_token_payload
-
-from backend.src.local.api.v1 import local_bookmarks as errors
 from backend.src.services.service_bookmarks import (
     BookmarksService,
     get_bookmarks_service,
@@ -47,7 +46,7 @@ async def add_bookmarks(
 ):
     if jwt is None:
         raise HTTPException(
-            status_code=HTTPStatus.NOT_FOUND, detail=errors.NO_AUTHORIZED
+            status_code=HTTPStatus.UNAUTHORIZED, detail=errors.NO_AUTHORIZED
         )
     user_id = jwt.user_id
     bookmarks_json = jsonable_encoder(bookmarks)
@@ -68,7 +67,7 @@ async def get_all_bookmarks(
 ):
     if jwt is None:
         raise HTTPException(
-            status_code=HTTPStatus.NOT_FOUND, detail=errors.NO_AUTHORIZED
+            status_code=HTTPStatus.UNAUTHORIZED, detail=errors.NO_AUTHORIZED
         )
     user_id = jwt.user_id
     user_bookmarks = await bookmarks_service.get_all_bookmarks(user_id)
@@ -93,10 +92,13 @@ async def delete_bookmarks(
 ):
     if jwt is None:
         raise HTTPException(
-            status_code=HTTPStatus.NOT_FOUND, detail=errors.NO_AUTHORIZED
+            status_code=HTTPStatus.UNAUTHORIZED, detail=errors.NO_AUTHORIZED
         )
     user_id = jwt.user_id
     bookmarks_json = jsonable_encoder(bookmarks)
-    await bookmarks_service.delete_bookmarks(str(user_id), bookmarks_json)
-
+    result = await bookmarks_service.delete_bookmarks(str(user_id), bookmarks_json)
+    if not result:
+        raise HTTPException(
+            status_code=HTTPStatus.NOT_FOUND, detail=errors.NOT_DELETE
+        )
     return BookmarksResponse(film_id=bookmarks_json["film_id"], status=True)
