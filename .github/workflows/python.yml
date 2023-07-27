@@ -42,7 +42,7 @@ jobs:
 
     - name: Test with pytest
       run: |
-        pytest backend/tests/functional/src_tests/
+        docker compose -f backend/tests/functional/docker-compose.yml up -d
 
     - name: Send Telegram notification on success
       if: ${{ success() }}

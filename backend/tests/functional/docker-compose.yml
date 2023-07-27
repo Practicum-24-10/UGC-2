@@ -15,7 +15,7 @@ services:
       build: ../../.
       image: backend-image
       env_file:
-        - ../../.env
+        - ../../.env.example
       healthcheck:
         test: ["CMD", "curl", "--fail", "http://localhost:8000/api/openapi"]
         interval: 15s
@@ -30,7 +30,7 @@ services:
       image: backend-image
       working_dir: /app/backend/tests/functional
       env_file:
-        - .env
+        - .env.example
       entrypoint: >
         sh -c "pip install -r requirements.txt
         && pytest src_tests"
