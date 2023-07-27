@@ -420,7 +420,7 @@ async def test_bad_put_review(
     ]
 )
 @pytestmark
-async def test_del_review(
+async def test_no_token_del_review(
         make_post_request, make_get_request, make_delete_request,
         mongo_delete_data,
         mongo_write_data, query_data, expected_answer):

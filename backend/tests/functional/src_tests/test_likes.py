@@ -298,7 +298,7 @@ async def test_bad_add_likes(
     ]
 )
 @pytestmark
-async def test_add_likes(
+async def test_no_token_add_likes(
         make_get_request, make_post_request, mongo_delete_data,
         mongo_write_data, query_data,
         expected_answer):

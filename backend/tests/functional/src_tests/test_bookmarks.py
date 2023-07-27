@@ -219,7 +219,7 @@ async def test_bad_add_bookmark(
     ]
 )
 @pytestmark
-async def test_del_bookmark(
+async def test_no_token_del_bookmark(
         make_get_request, make_post_request, make_delete_request,
         mongo_delete_data,
         mongo_write_data, query_data,
