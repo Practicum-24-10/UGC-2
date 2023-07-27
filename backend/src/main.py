@@ -1,6 +1,5 @@
 import logging
 
-import logstash
 import sentry_sdk
 import uvicorn
 from fastapi import FastAPI
@@ -16,7 +15,7 @@ from backend.src.core.logger import LOGGING
 from backend.src.db import mongo_db
 from backend.src.db.storage import MongoStorage
 
-# sentry_sdk.init(dsn=DSN, integrations=[FastApiIntegration()])
+sentry_sdk.init(dsn=DSN, integrations=[FastApiIntegration()])
 
 logging.basicConfig(**LOGGING)
 log = logging.getLogger(__name__)
