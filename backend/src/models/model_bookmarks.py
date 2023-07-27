@@ -1,12 +1,7 @@
 from uuid import UUID
 
-import orjson
-from pydantic import BaseModel
+from backend.src.models.model_mixin import ModelMixin
 
 
-def orjson_dumps(v, *, default):
-    return orjson.dumps(v, default=default).decode()
-
-
-class Bookmarks(BaseModel):
+class Bookmarks(ModelMixin):
     film_id: UUID
