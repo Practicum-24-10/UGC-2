@@ -1,7 +1,8 @@
 import jwt
 from fastapi import Depends, HTTPException
-from jwt import ExpiredSignatureError, InvalidSignatureError, DecodeError
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from jwt import DecodeError, ExpiredSignatureError, InvalidSignatureError
+
 from backend.src.auth.abc_key import AbstractKey
 from backend.src.auth.rsa_key import get_pk
 from backend.src.local.services import autorization as errors

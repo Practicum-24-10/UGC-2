@@ -1,6 +1,7 @@
 from typing import Annotated
 
 from fastapi import Query
+
 from backend.src.local.api.v1 import anotation
 
 

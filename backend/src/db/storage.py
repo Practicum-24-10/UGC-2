@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Any
-from bson.objectid import ObjectId
 
 import motor.motor_asyncio
+from bson.objectid import ObjectId
 
 
 class AbstractStorage(ABC):

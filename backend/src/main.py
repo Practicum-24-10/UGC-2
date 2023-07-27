@@ -1,8 +1,8 @@
 import logging
+
+import logstash
 import sentry_sdk
 import uvicorn
-import logstash
-
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 from sentry_sdk.integrations.fastapi import FastApiIntegration
@@ -11,11 +11,10 @@ from backend.src.api.v1 import api_likes, api_reviews
 from backend.src.api.v1.api_bookmarks import router as bookmarks_router
 from backend.src.auth import rsa_key
 from backend.src.auth.abc_key import RsaKey
-from backend.src.core.config import PUBLIC_KEY, AppSettings, DSN
+from backend.src.core.config import DSN, PUBLIC_KEY, AppSettings
 from backend.src.core.logger import LOGGING
 from backend.src.db import mongo_db
 from backend.src.db.storage import MongoStorage
-
 
 # sentry_sdk.init(dsn=DSN, integrations=[FastApiIntegration()])
 

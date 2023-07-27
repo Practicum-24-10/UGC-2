@@ -1,7 +1,8 @@
+from http import HTTPStatus
+
 import pytest as pytest
 
-from backend.tests.functional.testdata import films, counter, jwt
-from http import HTTPStatus
+from backend.tests.functional.testdata import films, jwt
 
 pytestmark = pytest.mark.asyncio
 

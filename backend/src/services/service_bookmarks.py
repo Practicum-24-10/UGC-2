@@ -3,10 +3,10 @@ from functools import lru_cache
 from typing import Iterable
 from uuid import UUID
 
-from backend.src.db.storage import AbstractStorage
-from backend.src.db.mongo_db import get_mongo
 from fastapi import Depends
 
+from backend.src.db.mongo_db import get_mongo
+from backend.src.db.storage import AbstractStorage
 from backend.src.services.mixin import MixinModel
 
 log = logging.getLogger(__name__)
