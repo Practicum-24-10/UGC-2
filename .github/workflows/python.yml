@@ -39,6 +39,9 @@ jobs:
       run: |
         pyright backend/src/
 
+    - name: Running tests in Docker Compose
+      run: docker-compose -f backend/tests/functional/docker-compose.yml up -d
+
     - name: Send Telegram notification on success
       if: ${{ success() }}
       env:
