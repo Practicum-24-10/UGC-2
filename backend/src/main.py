@@ -18,7 +18,9 @@ from backend.src.db.storage import MongoStorage
 
 
 sentry_sdk.init(dsn=DSN, integrations=[FastApiIntegration()])
-logging.config.dictConfig(LOGGING)
+
+logging.basicConfig(**LOGGING)
+log = logging.getLogger(__name__)
 
 config = AppSettings()
 app = FastAPI(
