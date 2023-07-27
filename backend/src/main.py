@@ -1,6 +1,7 @@
 import logging
 import sentry_sdk
 import uvicorn
+import logstash
 
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
@@ -18,6 +19,9 @@ from backend.src.db.storage import MongoStorage
 
 sentry_sdk.init(dsn=DSN, integrations=[FastApiIntegration()])
 
+logging.basicConfig(**LOGGING)
+log = logging.getLogger(__name__)
+
 config = AppSettings()
 app = FastAPI(
     title=config.project_name,
@@ -29,7 +33,8 @@ app = FastAPI(
 
 @app.on_event("startup")
 async def startup():
-    mongo_db.mongo = MongoStorage(host=config.mongo_host, port=config.mongo_port)
+    mongo_db.mongo = MongoStorage(
+        host=config.mongo_host, port=config.mongo_port)
     rsa_key.pk = RsaKey(path=PUBLIC_KEY, algorithms=["RS256"])
 
 
@@ -43,9 +48,9 @@ app.include_router(
 
 app.include_router(api_likes.router, prefix="/api/v1/likes", tags=["likes"])
 
-app.include_router(bookmarks_router, prefix="/api/v1/bookmarks", tags=["bookmarks"])
+app.include_router(
+    bookmarks_router, prefix="/api/v1/bookmarks", tags=["bookmarks"])
 
 if __name__ == "__main__":
-    logging.basicConfig(**LOGGING)
-    log = logging.getLogger(__name__)
+
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
