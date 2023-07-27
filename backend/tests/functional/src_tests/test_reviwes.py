@@ -13,26 +13,22 @@ pytestmark = pytest.mark.asyncio
         (
                 {'film_id': films[0]['film_id'],
                  "review": "Райан Гослинг в этом фильме буквально я"},
-                {'status': True,
-                 'review_id': None}
+                {'status': True}
         ),
         (
                 {'film_id': films[1]['film_id'],
                  "review": "Райан Гослинг в этом фильме буквально я"},
-                {'status': True,
-                 'review_id': None}
+                {'status': True}
         ),
         (
                 {'film_id': films[2]['film_id'],
                  "review": "Райан Гослинг в этом фильме буквально я"},
-                {'status': True,
-                 'review_id': None}
+                {'status': True}
         ),
         (
                 {'film_id': films[3]['film_id'],
                  "review": "Райан Гослинг в этом фильме буквально я"},
-                {'status': True,
-                 'review_id': None}
+                {'status': True}
         ),
     ]
 )
@@ -57,7 +53,7 @@ async def test_add_review(
     )
     # Assert
     assert response['body']['status'] == expected_answer['status']
-    assert response['body']['review_id'] != expected_answer['review_id']
+    assert response['body']['review_id'] is not None
 
 
 @pytest.mark.parametrize(
@@ -118,29 +114,25 @@ async def test_add_double_review(
                 {'film_id': films[0]['film_id'],
                  "review": "Райан Гослинг в этом фильме буквально я",
                  "update": "Или не я"},
-                {'status': True,
-                 'review_id': None}
+                {'status': True}
         ),
         (
                 {'film_id': films[1]['film_id'],
                  "review": "Райан Гослинг в этом фильме буквально я",
                  "update": "Или все же я"},
-                {'status': True,
-                 'review_id': None}
+                {'status': True}
         ),
         (
                 {'film_id': films[2]['film_id'],
                  "review": "Райан Гослинг в этом фильме буквально я",
                  "update": "Нет не я"},
-                {'status': True,
-                 'review_id': None}
+                {'status': True}
         ),
         (
                 {'film_id': films[3]['film_id'],
                  "review": "Райан Гослинг в этом фильме буквально я",
                  "update": "Я это я"},
-                {'status': True,
-                 'review_id': None}
+                {'status': True}
         ),
     ]
 )
@@ -173,9 +165,9 @@ async def test_put_review(
     )
     # Assert
     assert response_1['body']['status'] == expected_answer['status']
-    assert response_1['body']['review_id'] != expected_answer['review_id']
+    assert response_1['body']['review_id'] is not None
     assert response_2['body']['status'] == expected_answer['status']
-    assert response_2['body']['review_id'] != expected_answer['review_id']
+    assert response_2['body']['review_id'] is not None
     assert response_2['body']['review_id'] == response_1['body']['review_id']
 
 

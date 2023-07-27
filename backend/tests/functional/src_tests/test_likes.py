@@ -12,26 +12,22 @@ pytestmark = pytest.mark.asyncio
         (
                 {'film_id': films[0]['film_id']},
                 {'likes': counter,
-                 'dislikes': counter,
-                 'user_like': None}
+                 'dislikes': counter}
         ),
         (
                 {'film_id': films[1]['film_id']},
                 {'likes': counter,
-                 'dislikes': counter,
-                 'user_like': None}
+                 'dislikes': counter}
         ),
         (
                 {'film_id': films[2]['film_id']},
                 {'likes': counter,
-                 'dislikes': counter,
-                 'user_like': None}
+                 'dislikes': counter}
         ),
         (
                 {'film_id': films[3]['film_id']},
                 {'likes': counter,
-                 'dislikes': counter,
-                 'user_like': None}
+                 'dislikes': counter}
         ),
     ]
 )
@@ -47,7 +43,7 @@ async def test_count_likes(
     # Assert
     assert response['body']['likes'] == expected_answer['likes']
     assert response['body']['dislikes'] == expected_answer['dislikes']
-    assert response['body']['user_like'] == expected_answer['user_like']
+    assert response['body']['user_like'] is None
 
 
 @pytest.mark.parametrize(
@@ -56,26 +52,22 @@ async def test_count_likes(
         (
                 {'film_id': films[0]['film_id'],
                  'value': 1},
-                {'status': True,
-                 'like_id': None}
+                {'status': True}
         ),
         (
                 {'film_id': films[1]['film_id'],
                  'value': 0},
-                {'status': True,
-                 'like_id': None}
+                {'status': True}
         ),
         (
                 {'film_id': films[2]['film_id'],
                  'value': 1},
-                {'status': True,
-                 'like_id': None}
+                {'status': True}
         ),
         (
                 {'film_id': films[3]['film_id'],
                  'value': 0},
-                {'status': True,
-                 'like_id': None}
+                {'status': True}
         ),
     ]
 )
@@ -101,7 +93,7 @@ async def test_add_likes(
     )
     # Assert
     assert response['body']['status'] == expected_answer['status']
-    assert response['body']['like_id'] != expected_answer['like_id']
+    assert response['body']['like_id'] is not None
 
 
 @pytest.mark.parametrize(
@@ -110,26 +102,22 @@ async def test_add_likes(
         (
                 {'film_id': films[0]['film_id'],
                  'value': 1},
-                {'status': True,
-                 'like_id': None}
+                {'status': True}
         ),
         (
                 {'film_id': films[1]['film_id'],
                  'value': 0},
-                {'status': True,
-                 'like_id': None}
+                {'status': True}
         ),
         (
                 {'film_id': films[2]['film_id'],
                  'value': 1},
-                {'status': True,
-                 'like_id': None}
+                {'status': True}
         ),
         (
                 {'film_id': films[3]['film_id'],
                  'value': 0},
-                {'status': True,
-                 'like_id': None}
+                {'status': True}
         ),
     ]
 )
@@ -158,7 +146,7 @@ async def test_del_likes(
     )
     # Assert
     assert response['body']['status'] == expected_answer['status']
-    assert response['body']['like_id'] == expected_answer['like_id']
+    assert response['body']['like_id'] is None
 
 
 @pytest.mark.parametrize(
@@ -168,29 +156,25 @@ async def test_del_likes(
                 {'film_id': films[0]['film_id'],
                  'value': 1},
                 {'likes': counter + 1,
-                 'dislikes': counter,
-                 'user_like': None}
+                 'dislikes': counter}
         ),
         (
                 {'film_id': films[1]['film_id'],
                  'value': 0},
                 {'likes': counter,
-                 'dislikes': counter + 1,
-                 'user_like': None}
+                 'dislikes': counter + 1}
         ),
         (
                 {'film_id': films[2]['film_id'],
                  'value': 1},
                 {'likes': counter + 1,
-                 'dislikes': counter,
-                 'user_like': None}
+                 'dislikes': counter}
         ),
         (
                 {'film_id': films[3]['film_id'],
                  'value': 0},
                 {'likes': counter,
-                 'dislikes': counter + 1,
-                 'user_like': None}
+                 'dislikes': counter + 1}
         ),
     ]
 )
@@ -219,7 +203,7 @@ async def test_count_before_add_likes(
     # Assert
     assert response['body']['likes'] == expected_answer['likes']
     assert response['body']['dislikes'] == expected_answer['dislikes']
-    assert response['body']['user_like'] != expected_answer['user_like']
+    assert response['body']['user_like'] is not None
 
 
 @pytest.mark.parametrize(
