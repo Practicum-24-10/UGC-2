@@ -11,11 +11,12 @@ services:
         interval: 10s
         timeout: 5s
         retries: 5
+
     backend:
       build: ../../.
       image: backend-image
       env_file:
-        - ../../.env
+        - ../../.env.example
       healthcheck:
         test: ["CMD", "curl", "--fail", "http://localhost:8000/api/openapi"]
         interval: 15s
@@ -26,16 +27,18 @@ services:
           condition: service_healthy
       expose:
         - 8000
+
     tests:
       image: backend-image
       working_dir: /app/backend/tests/functional
       env_file:
-        - .env
+        - .env.example
       entrypoint: >
         sh -c "pip install -r requirements.txt
         && pytest src_tests"
       depends_on:
         - backend
+
     nginx:
       image: nginx:1.23.4-alpine
       volumes:
