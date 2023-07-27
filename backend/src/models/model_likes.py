@@ -1,8 +1,8 @@
 from uuid import UUID
 
-from backend.src.models.model_mixin import ModelMixin
+from backend.src.models.model_mixin import OrjsonMixin
 
 
-class Like(ModelMixin):
+class Like(OrjsonMixin):
     film_id: UUID
     value: int
