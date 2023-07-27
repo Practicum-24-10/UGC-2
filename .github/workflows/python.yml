@@ -27,7 +27,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install -r backend/requirements.txt
-        pip install -r backend/tests/functional/requirements.txt
 
     - name: Lint with flake8
       run: |
@@ -39,6 +38,7 @@ jobs:
     - name: Check with pyright
       run: |
         pyright backend/src/
+
 
     - name: Test with pytest
       run: |

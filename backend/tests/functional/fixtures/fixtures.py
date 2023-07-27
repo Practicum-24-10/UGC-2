@@ -2,11 +2,11 @@ import asyncio
 from typing import Any, Generator
 
 import aiohttp
-import pytest
 import motor.motor_asyncio
-from backend.tests.functional.testdata import collections
+import pytest
 
 from backend.tests.functional.settings import test_settings
+from backend.tests.functional.testdata import collections
 from backend.tests.functional.utils.generator import GeneratorMongo
 
 
@@ -16,8 +16,8 @@ async def mongo_client():
         f"mongodb://{test_settings.mongo_host}:{test_settings.mongo_port}"
     )["movies"]
     yield client
-    # for collection in collections:
-    #     await client[collection].delete_many({})
+    for collection in collections:
+        await client[collection].delete_many({})
 
 
 @pytest.fixture(scope="session", name="event_loop")
@@ -42,9 +42,7 @@ def mongo_write_data(mongo_client):
 def mongo_delete_data(mongo_client):
     async def inner():
         for collection in collections:
-            result = await mongo_client[collection].delete_many({})
-            pass
-
+            await mongo_client[collection].delete_many({})
     return inner
 
 

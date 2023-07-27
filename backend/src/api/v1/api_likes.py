@@ -1,14 +1,15 @@
+from http import HTTPStatus
 from typing import Annotated
 from uuid import UUID
 
 from fastapi import APIRouter, Body, Depends, HTTPException, Path
 from fastapi.encoders import jsonable_encoder
-from http import HTTPStatus
+from pydantic import BaseModel, Field
+
+from backend.src.local.api.v1 import local_likes as errors
 from backend.src.models.jwt import JWTPayload
 from backend.src.services.autorization import get_token_payload
-from backend.src.local.api.v1 import local_likes as errors
 from backend.src.services.service_likes import LikeService, get_like_service
-from pydantic import BaseModel, Field
 
 router = APIRouter()
 

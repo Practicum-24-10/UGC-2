@@ -1,7 +1,8 @@
+from http import HTTPStatus
+
 import pytest as pytest
 
-from backend.tests.functional.testdata import films, counter, jwt
-from http import HTTPStatus
+from backend.tests.functional.testdata import counter, films, jwt
 
 pytestmark = pytest.mark.asyncio
 
@@ -223,8 +224,7 @@ async def test_count_before_add_likes(
                 {'film_id': films[2]['film_id'],
                  'value': 'fdsfsd'},
                 {'status': HTTPStatus.UNPROCESSABLE_ENTITY}
-        )
-        ,
+        ),
         (
                 {'film_id': 'dsda',
                  'value': 0},

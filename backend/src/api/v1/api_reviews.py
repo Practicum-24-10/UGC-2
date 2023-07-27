@@ -1,17 +1,16 @@
+from http import HTTPStatus
 from typing import Annotated
 from uuid import UUID
 
 from fastapi import APIRouter, Body, Depends, HTTPException, Path
 from fastapi.encoders import jsonable_encoder
-from http import HTTPStatus
+from pydantic import BaseModel, Field
+
+from backend.src.local.api.v1 import local_reviews as errors
 from backend.src.models.jwt import JWTPayload
 from backend.src.models.pagination import PaginatedParams
 from backend.src.services.autorization import get_token_payload
-from backend.src.local.api.v1 import local_reviews as errors
-from pydantic import BaseModel, Field
-
-from backend.src.services.service_reviews import ReviewsService, \
-    get_reviews_service
+from backend.src.services.service_reviews import ReviewsService, get_reviews_service
 
 router = APIRouter()
 

@@ -2,8 +2,8 @@ import random
 import string
 import uuid
 
-from backend.tests.functional.models.models import Like, Reviews, Bookmarks
-from backend.tests.functional.testdata import films, user, counter
+from backend.tests.functional.models.models import Bookmarks, Like, Reviews
+from backend.tests.functional.testdata import counter, films
 
 
 class GeneratorMongo:

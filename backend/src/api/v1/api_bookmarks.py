@@ -5,10 +5,9 @@ from fastapi import APIRouter, Body, Depends, HTTPException
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel, Field
 
+from backend.src.local.api.v1 import local_bookmarks as errors
 from backend.src.models.jwt import JWTPayload
 from backend.src.services.autorization import get_token_payload
-
-from backend.src.local.api.v1 import local_bookmarks as errors
 from backend.src.services.service_bookmarks import (
     BookmarksService,
     get_bookmarks_service,
@@ -103,5 +102,3 @@ async def delete_bookmarks(
             status_code=HTTPStatus.NOT_FOUND, detail=errors.NOT_DELETE
         )
     return BookmarksResponse(film_id=bookmarks_json["film_id"], status=True)
-
-
