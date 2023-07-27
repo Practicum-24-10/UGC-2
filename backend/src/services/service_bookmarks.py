@@ -21,8 +21,9 @@ class BookmarksService(MixinModel):
     async def delete_bookmarks(self, user_id: str, bookmarks: dict):
         bookmarks['user_id'] = user_id
         del_result = await self._del_to_storage('bookmarks', bookmarks)
-        if del_result:
-            return del_result.acknowledged
+        if del_result is not None and del_result.deleted_count > 0:
+            return True
+        return False
 
     async def get_all_bookmarks(self, user_id: UUID) -> Iterable | None:
         data = {"user_id": str(user_id)}

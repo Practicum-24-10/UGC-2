@@ -14,3 +14,5 @@ films = [
         "film_id": "22ccb4a3-9c9e-4209-a2d9-37469231c154",
     }
 ]
+collections = ["likes", "reviews", "bookmarks"]
+counter = 10

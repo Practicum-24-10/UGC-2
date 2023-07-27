@@ -31,7 +31,7 @@ class ReviewsService(MixinModel):
         data = {
             "film_id": film_id
         }
-        _to = size * page
+        _to = size
         _from = size * (page - 1)
         result = await self._get_from_pagination('reviews', data, _from, _to)
         if result:

@@ -46,7 +46,7 @@ async def dell_add_like(
 ):
     if jwt is None:
         raise HTTPException(
-            status_code=HTTPStatus.NOT_FOUND, detail=errors.NO_AUTHORIZED
+            status_code=HTTPStatus.UNAUTHORIZED, detail=errors.NO_AUTHORIZED
         )
     user_id = jwt.user_id
     like_id = await like_service.get_like(user_id, like.film_id)

@@ -68,7 +68,7 @@ async def add_review(
 ):
     if jwt is None:
         raise HTTPException(
-            status_code=HTTPStatus.NOT_FOUND, detail=errors.NO_AUTHORIZED
+            status_code=HTTPStatus.UNAUTHORIZED, detail=errors.NO_AUTHORIZED
         )
     user_id = jwt.user_id
     review_id = await review_service.get_review(user_id, review.film_id)
@@ -98,7 +98,7 @@ async def change_review(
 ):
     if jwt is None:
         raise HTTPException(
-            status_code=HTTPStatus.NOT_FOUND, detail=errors.NO_AUTHORIZED
+            status_code=HTTPStatus.UNAUTHORIZED, detail=errors.NO_AUTHORIZED
         )
     user_id = jwt.user_id
     review_old = await review_service.get_review(user_id, review_new.film_id)
@@ -127,7 +127,7 @@ async def delete_review(
 ):
     if jwt is None:
         raise HTTPException(
-            status_code=HTTPStatus.NOT_FOUND, detail=errors.NO_AUTHORIZED
+            status_code=HTTPStatus.UNAUTHORIZED, detail=errors.NO_AUTHORIZED
         )
     user_id = jwt.user_id
     review = await review_service.get_review(user_id, review_del.film_id)
