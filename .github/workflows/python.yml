@@ -40,7 +40,7 @@ jobs:
         pyright backend/src/
 
     - name: Running tests in Docker Compose
-      run: docker-compose -f backend/tests/functional/docker-compose.yml up -d  --exit-code-from tests
+      run: docker-compose -f backend/tests/functional/docker-compose.yml up --exit-code-from tests
 
     - name: Send Telegram notification on success
       if: ${{ success() }}
