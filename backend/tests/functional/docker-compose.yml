@@ -35,7 +35,8 @@ services:
         - .env.example
       entrypoint: >
         sh -c "pip install -r requirements.txt
-        && pytest src_tests"
+        && pytest src_tests
+        || (echo 'Tests failed '; exit 1)"
       depends_on:
         - backend
 
