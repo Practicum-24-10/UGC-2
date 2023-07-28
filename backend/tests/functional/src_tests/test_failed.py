@@ -1,2 +1,2 @@
-# def test_f():
-#     assert 1 == 0
+def test_f():
+    assert 1 == 0
