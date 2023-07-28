@@ -40,13 +40,7 @@ jobs:
         pyright backend/src/
 
     - name: Running tests in Docker Compose
-      run: |
-        docker-compose -f backend/tests/functional/docker-compose.yml up -d
-        exit_code=$?
-        if [ $exit_code -ne 0 ]; then
-          echo "Docker Compose failed with exit code $exit_code"
-          exit $exit_code
-        fi
+      run: docker-compose -f backend/tests/functional/docker-compose.yml up -d  --exit-code-from tests
 
     - name: Send Telegram notification on success
       if: ${{ success() }}
